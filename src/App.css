@@ -73,6 +73,27 @@
 }
 
 .selected p {
-  color: #defd2f;
+  color:  black;
   font-weight: bold;
+}
+.tools {
+  padding-left: 400px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.tools button {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: none;
+}
+
+.tools button span:hover {
+  color: #99cccc;
 }

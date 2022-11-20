@@ -1,10 +1,26 @@
-import React from "react";
-
-const CalendarDays = ({ day, changeCurrentDay }) => {
-  const firstDayOfMonth = new Date(day.getFullYear(), day.getMonth(), 1);
+const randevular = [
+  {
+    date: new Date("2022-11-11"),
+  },
+  {
+    date: new Date("2022-11-25"),
+  },
+  {
+    date: new Date("2022-11-10"),
+  },
+  {
+    date: new Date("2022-11-20"),
+  },
+];
+function CalendarDays(props) {
+  const firstDayOfMonth = new Date(
+    props.day.getFullYear(),
+    props.day.getMonth(),
+    1
+  );
   const weekdayOfFirstDay = firstDayOfMonth.getDay();
   let currentDays = [];
-  console.log(firstDayOfMonth, "first");
+
   for (let day = 0; day < 42; day++) {
     if (day === 0 && weekdayOfFirstDay === 0) {
       firstDayOfMonth.setDate(firstDayOfMonth.getDate() - 7);
@@ -17,37 +33,63 @@ const CalendarDays = ({ day, changeCurrentDay }) => {
     }
 
     let calendarDay = {
-      currentMonth: firstDayOfMonth.getMonth() === day,
+      currentMonth: firstDayOfMonth.getMonth() === props.day.getMonth(),
       date: new Date(firstDayOfMonth),
       month: firstDayOfMonth.getMonth(),
       number: firstDayOfMonth.getDate(),
-      selected: firstDayOfMonth.toDateString() === day,
+      selected: firstDayOfMonth.toDateString() === props.day.toDateString(),
       year: firstDayOfMonth.getFullYear(),
     };
+
     currentDays.push(calendarDay);
   }
-  console.log(currentDays, "dc");
+  const checkMeet = ({ month, year, day }) => {
+    var check = randevular.find((x) => {
+      if (
+        x.date.getDate() === day &&
+        x.date.getMonth() === month &&
+        x.date.getFullYear() === year
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return check ? "red" : "white";
+  };
   return (
-    <div>
-      <div className="table-content">
-        {currentDays.map((day, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => changeCurrentDay(day)}
-              className={
-                "calendar-day" +
-                (day.currentMonth ? " current" : "") +
-                (day.selected ? " selected" : "")
+    <div className="table-content">
+      {currentDays.map((day, index) => {
+        const check = checkMeet({
+          month: day.month,
+          year: day.year,
+          day: day.number,
+        });
+        return (
+          <div
+            style={{
+              background: check,
+            }}
+            key={index}
+            className={
+              "calendar-day" +
+              (day.currentMonth ? " current" : "") +
+              (day.selected ? " selected" : "")
+            }
+            onClick={() => {
+              if (check === "white" && day.currentMonth) {
+                props.changeCurrentDay(day);
+              } else {
+                alert("date müsait değil");
               }
-            >
-              <p>{day.number}</p>
-            </div>
-          );
-        })}
-      </div>
+            }}
+          >
+            <p>{day.number}</p>
+          </div>
+        );
+      })}
     </div>
   );
-};
+}
 
 export default CalendarDays;
